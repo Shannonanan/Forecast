@@ -3,4 +3,6 @@
     <string name="exception_message_generic">error</string>
     <string name="exception_message_no_connection">no internet connection</string>
     <string name="exception_message_database_error">database error</string>
+
+    <string name="placeholder">placeholder</string>
 </resources>
