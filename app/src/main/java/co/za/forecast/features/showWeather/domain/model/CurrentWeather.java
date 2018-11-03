@@ -53,4 +53,5 @@ public class CurrentWeather {
         this.name = name;
     }
 
+
 }
