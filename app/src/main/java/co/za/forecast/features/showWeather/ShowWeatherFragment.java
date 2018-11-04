@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 
 public class ShowWeatherFragment extends Fragment {
 
-    private ShowWeatherViewModel showWeatherViewModel;
-   // private TasksFragBinding mTasksFragBinding;
-  // private TasksAdapter mListAdapter;
 
     public static ShowWeatherFragment newInstance() {
         return new ShowWeatherFragment();
@@ -22,7 +19,7 @@ public class ShowWeatherFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        showWeatherViewModel.start();
+       // showWeatherViewModel.start();
     }
 
     @Override
@@ -38,22 +35,12 @@ public class ShowWeatherFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        mTasksFragBinding = TasksFragBinding.inflate(inflater, container, false);
-//
-//        mTasksFragBinding.setView(this);
-//
-//        mTasksFragBinding.setViewmodel(mTasksViewModel);
-//
-//        setHasOptionsMenu(true);
-//
-//        View root = mTasksFragBinding.getRoot();
+
 
         return null;
     }
 
-    public void setViewModel(ShowWeatherViewModel viewModel) {
-        showWeatherViewModel = viewModel;
-    }
+
 }
 
 
