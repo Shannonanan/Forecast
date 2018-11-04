@@ -1,13 +1,10 @@
 package co.za.forecast.data;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
-import co.za.forecast.common.AppExecutors;
 import co.za.forecast.data.local.LocalWeatherDataSource;
 import co.za.forecast.data.remote.RemoteWeatherDataSource;
 import co.za.forecast.features.showWeather.domain.model.CurrentWeather;
+import co.za.forecast.features.showWeather.domain.model.FiveDayForecast;
 
 public class WeatherRepository implements WeatherDataSource {
 
@@ -24,9 +21,9 @@ public class WeatherRepository implements WeatherDataSource {
 
     public static WeatherRepository getInstance(LocalWeatherDataSource localWeatherDataSource,
                                                 RemoteWeatherDataSource remoteWeatherDataSource) {
-        if(sInstance == null){
-            synchronized (LOCK){
-                sInstance = new WeatherRepository(localWeatherDataSource,remoteWeatherDataSource);
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                sInstance = new WeatherRepository(localWeatherDataSource, remoteWeatherDataSource);
             }
         }
         return sInstance;
@@ -37,31 +34,30 @@ public class WeatherRepository implements WeatherDataSource {
     public void getCurrentWeather(final String lat, final String lon, final LoadCurrentWeatherCallBack currentWeatherCallBack) {
 
         //check in local
-        localWeatherDataSource.getCurrentWeather(lat, lon, new LoadCurrentWeatherCallBack() {
-            @Override
-            public void onDataLoaded(CurrentWeather currentWeather) {
-                if (currentWeather == null) {
-                    //if nothing - pull remote
-                    getCurrentWeatherFromRemote(lat, lon, currentWeatherCallBack);
-                } else {
-                    checkIfFresh(currentWeather);
-                    currentWeatherCallBack.onDataLoaded(currentWeather);
-                }
-            }
-
-            @Override
-            public void onDataloadedFailed(Throwable exception) {
-                currentWeatherCallBack.onDataloadedFailed(exception);
-            }
-        });
-
-
-        //if something - populate ui and check if stale
-        // if stale - pull from remote and update local and ui
-        //if not - nothing
-
-
+//        localWeatherDataSource.getCurrentWeather(lat, lon, new LoadCurrentWeatherCallBack() {
+//            @Override
+//            public void onDataLoaded(CurrentWeather currentWeather) {
+//                if (currentWeather == null) {
+        //if nothing - pull remote
+        getCurrentWeatherFromRemote(lat, lon, currentWeatherCallBack);
+//                } else {
+//                    checkIfFresh(currentWeather);
+//                    currentWeatherCallBack.onDataLoaded(currentWeather);
+//                }
     }
+
+//            @Override
+//            public void onDataloadedFailed(Throwable exception) {
+//                currentWeatherCallBack.onDataloadedFailed(exception);
+//            }
+//        });
+
+
+    //if something - populate ui and check if stale
+    // if stale - pull from remote and update local and ui
+    //if not - nothing
+
+//}
 
     private void checkIfFresh(CurrentWeather currentWeather) {
         //if fresh cool
@@ -71,10 +67,10 @@ public class WeatherRepository implements WeatherDataSource {
     public void getCurrentWeatherFromRemote(String lat, String lon, final LoadCurrentWeatherCallBack currentWeatherCallBack) {
         remoteWeatherDataSource.getCurrentWeather(lat, lon, new LoadCurrentWeatherCallBack() {
             @Override
-            public void onDataLoaded(CurrentWeather currentWeather) {
+            public void onDataLoaded(FiveDayForecast forecast) {
                 //  and update local, update timestamp
              //   updateLocalWeather(currentWeather);
-                currentWeatherCallBack.onDataLoaded(currentWeather);
+                currentWeatherCallBack.onDataLoaded(forecast);
             }
 
             @Override

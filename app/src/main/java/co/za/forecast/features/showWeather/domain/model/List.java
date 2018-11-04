@@ -6,12 +6,26 @@ import com.google.gson.annotations.SerializedName;
 
 public class List {
 
+    @SerializedName("dt")
+    @Expose
+    private Integer dt;
     @SerializedName("main")
     @Expose
     private Main main;
     @SerializedName("weather")
     @Expose
     private java.util.List<Weather> weather = null;
+    @SerializedName("dt_txt")
+    @Expose
+    private String dtTxt;
+
+    public Integer getDt() {
+        return dt;
+    }
+
+    public void setDt(Integer dt) {
+        this.dt = dt;
+    }
 
     public Main getMain() {
         return main;
@@ -27,6 +41,14 @@ public class List {
 
     public void setWeather(java.util.List<Weather> weather) {
         this.weather = weather;
+    }
+
+    public String getDtTxt() {
+        return dtTxt;
+    }
+
+    public void setDtTxt(String dtTxt) {
+        this.dtTxt = dtTxt;
     }
 
 }

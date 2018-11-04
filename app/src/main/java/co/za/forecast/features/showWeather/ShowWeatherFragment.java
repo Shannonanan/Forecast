@@ -9,54 +9,56 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ShowWeatherFragment extends Fragment {
+import co.za.forecast.data.WeatherRepository;
+import co.za.forecast.di.InjectorUtils;
+import co.za.forecast.features.viewControls.ViewMvcFactory;
 
+public class ShowWeatherFragment extends Fragment implements ShowWeatherContract.Listener{
+    String latitude;
+    String longitude;
 
-    public static ShowWeatherFragment newInstance() {
-        return new ShowWeatherFragment();
+    ShowWeatherPresenter showWeatherPresenter;
+    ViewMvcFactory mViewMvcFactory;
+
+    private ShowWeatherContract mViewMvc;
+    public ShowWeatherFragment() { setRetainInstance(true); }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewMvcFactory = InjectorUtils.provideViewMvcFactory(getContext());
+        showWeatherPresenter = InjectorUtils.providePresenter();
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-       // showWeatherViewModel.start();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mViewMvc  = mViewMvcFactory.newInstance(ShowWeatherContract.class, container);
+        mViewMvc.registerListener(this);
+        return mViewMvc.getRootView();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        latitude = String.valueOf(getArguments().getDouble("lat"));
+        longitude = String.valueOf(getArguments().getDouble("longs"));
+        if(savedInstanceState == null){
+        this.showWeatherPresenter.setView(mViewMvc);
+        showWeatherPresenter.getCurrentWeather(latitude,longitude);}
+
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewMvc.unregisterListener(this);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-        return null;
-    }
 
 
 }
 
 
-//    /**
-//     * Checks if the device has any active internet connection.
-//     *
-//     * @return true device with internet connection, otherwise false.
-//     */
-//    private boolean isThereInternetConnection() {
-//        boolean isConnected;
-//
-//        ConnectivityManager connectivityManager =
-//                (ConnectivityManager) this.mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-//        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-//
-//        return isConnected;
-//    }
-//if(isThereInternetConnection()){}

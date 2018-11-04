@@ -32,7 +32,7 @@ public class RemoteWeatherDataSource implements WeatherDataSource {
 
     @Override
     public void getCurrentWeather(String lat, String lon, final LoadCurrentWeatherCallBack currentWeatherCallBack) {
-        call = service.getCurrentWeather(lat,lon,"");
+        call = service.getCurrentWeather(lat,lon,"bd93967a9fa781ed9a813e9601cca72a");
             call.enqueue(new Callback<CurrentWeather>() {
                 @Override
                 public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
