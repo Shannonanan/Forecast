@@ -1,12 +1,13 @@
 
 package co.za.forecast.features.showWeather.domain.model;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class CurrentWeather {
+public class CurrentWeather implements Serializable {
 
     @SerializedName("weather")
     @Expose

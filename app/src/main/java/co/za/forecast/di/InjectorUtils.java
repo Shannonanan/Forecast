@@ -52,7 +52,4 @@ public class InjectorUtils {
         return ShowWeatherPresenter.getInstance(weatherRepository1);
     }
 
-    public static TemperatureConverter provideConverter(){
-        return TemperatureConverter.getInstance();
-    }
 }
