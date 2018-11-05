@@ -4,7 +4,7 @@ package co.za.forecast.features.showWeather.domain.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class fiveDayForecast {
+public class FiveDayForecast {
 
     @SerializedName("list")
     @Expose

@@ -45,7 +45,7 @@ public class AppExecutors {
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;
 
-    @Inject
+  //  @Inject
     @VisibleForTesting
     AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;

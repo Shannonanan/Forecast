@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Forecast</string>
+    <string name="exception_message_generic">error</string>
+    <string name="exception_message_no_connection">no internet connection</string>
+    <string name="exception_message_database_error">database error</string>
+
+    <string name="placeholder">placeholder</string>
+    <string name="tv_day_of_week">Monday</string>
+    <string name="tv_temp">00°</string>
+    <string name="tv_condition">SUNNY</string>
+
+    <string name="tv_min">min</string>
+    <string name="tv_current">current</string>
+    <string name="tv_max">max</string>
+    <string name="no_internet">no internet connection</string>
+    <string name="lat">lat</string>
+    <string name="longs">longs</string>
+    <string name="degree">\u00B0</string>
 </resources>

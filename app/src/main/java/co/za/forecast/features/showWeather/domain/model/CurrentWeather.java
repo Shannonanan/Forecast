@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class CurrentWeather {
 
     @SerializedName("weather")
@@ -52,5 +53,6 @@ public class CurrentWeather {
     public void setName(String name) {
         this.name = name;
     }
+
 
 }
