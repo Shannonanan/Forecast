@@ -6,16 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import co.za.forecast.R;
 import co.za.forecast.features.showWeather.domain.model.List;
+import co.za.forecast.features.showWeather.domain.model.Weather;
 
 
 public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.ShowWeatherViewHolder> {
@@ -51,7 +55,32 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
         final List weatherToday = this.getWeatherCollection.get(i);
 
         String dayOfWeek = weatherToday.getDtTxt();
-       showWeatherViewHolder.tv_day_of_week.setText(weatherToday.);
+       showWeatherViewHolder.tv_day_of_week.setText(weatherToday.getDtTxt());
+       String tempToday = String.valueOf(weatherToday.getMain().getTemp());
+       showWeatherViewHolder.tv_temperature.setText(tempToday);
+        java.util.List<Weather> getCondition = new ArrayList<>(weatherToday.getWeather());
+        String conditions = getCondition.get(0).getMain();
+        switch (conditions)
+        {
+            case "Clear":
+                showWeatherViewHolder.iv_icon_condition.setImageDrawable(mContext.getResources().getDrawable(
+                        R.drawable.clear));
+                break;
+            case "Clouds":
+                showWeatherViewHolder.iv_icon_condition.setImageDrawable(mContext.getResources().getDrawable(
+                        R.drawable.clouds));
+                break;
+            case "Rain":
+                showWeatherViewHolder.iv_icon_condition.setImageDrawable(mContext.getResources().getDrawable(
+                        R.drawable.rain));
+                break;
+            case "Thunderstorm":
+                showWeatherViewHolder.iv_icon_condition.setImageDrawable(mContext.getResources().getDrawable(
+                        R.drawable.rain));
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -64,6 +93,7 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
     static class ShowWeatherViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_day_of_week) TextView tv_day_of_week;
         @BindView(R.id.tv_temperature) TextView tv_temperature;
+        @BindView(R.id.iv_icon_condition) ImageView iv_icon_condition;
 
         public ShowWeatherViewHolder(@NonNull View itemView) {
             super(itemView);

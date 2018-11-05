@@ -12,7 +12,7 @@ public interface WeatherDataSource {
 
     interface LoadFiveDayWeatherCallBack{
         void onDataLoaded(FiveDayForecast fiveDayForecast);
-        void onDataloadedFailed(Exception exception);
+        void onDataloadedFailed(Throwable exception);
     }
 
     void getCurrentWeather(String lat, String lon,LoadCurrentWeatherCallBack currentWeatherCallBack);

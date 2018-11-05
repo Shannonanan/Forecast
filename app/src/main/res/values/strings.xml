@@ -15,4 +15,5 @@
     <string name="no_internet">no internet connection</string>
     <string name="lat">lat</string>
     <string name="longs">longs</string>
+    <string name="degree">\u00B0</string>
 </resources>

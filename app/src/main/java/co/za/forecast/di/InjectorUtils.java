@@ -13,6 +13,7 @@ import co.za.forecast.data.remote.RemoteWeatherDataSource;
 import co.za.forecast.features.showWeather.ShowWeatherPresenter;
 import co.za.forecast.features.viewControls.ViewMvcFactory;
 import co.za.forecast.utils.Constants;
+import co.za.forecast.utils.TemperatureConverter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,5 +50,9 @@ public class InjectorUtils {
         RemoteWeatherDataSource remoteWeatherDataSource = RemoteWeatherDataSource.getInstance(getWeatherService(getRetrofit()));
         WeatherRepository weatherRepository1 = new WeatherRepository(localWeatherDataSource,remoteWeatherDataSource);
         return ShowWeatherPresenter.getInstance(weatherRepository1);
+    }
+
+    public static TemperatureConverter provideConverter(){
+        return TemperatureConverter.getInstance();
     }
 }

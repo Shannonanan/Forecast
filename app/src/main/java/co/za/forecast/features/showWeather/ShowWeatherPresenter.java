@@ -1,14 +1,12 @@
 package co.za.forecast.features.showWeather;
 
-import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import co.za.forecast.data.WeatherDataSource;
 import co.za.forecast.data.WeatherRepository;
-import co.za.forecast.data.local.LocalWeatherDataSource;
 import co.za.forecast.features.showWeather.domain.model.CurrentWeather;
+import co.za.forecast.features.showWeather.domain.model.FiveDayForecast;
 import co.za.forecast.features.showWeather.domain.model.List;
 
 import static co.za.forecast.data.WeatherDataSource.*;
@@ -25,8 +23,8 @@ public class ShowWeatherPresenter {
     }
 
     public static ShowWeatherPresenter getInstance(WeatherRepository weatherRepository1) {
-        if(sInstance == null){
-            synchronized (LOCK){
+        if (sInstance == null) {
+            synchronized (LOCK) {
                 sInstance = new ShowWeatherPresenter(weatherRepository1);
             }
         }
@@ -41,9 +39,9 @@ public class ShowWeatherPresenter {
         weatherRepository.getCurrentWeather(latitude, longitude, new LoadCurrentWeatherCallBack() {
             @Override
             public void onDataLoaded(CurrentWeather currentWeather) {
-                filterList();
-                    showWeatherContract.renderCurrentWeather(currentWeather);
-                   // getFiveDayForecast(latitude, longitude);
+
+                showWeatherContract.renderCurrentWeather(currentWeather);
+                getFiveDayForecast(latitude, longitude);
             }
 
             @Override
@@ -54,18 +52,31 @@ public class ShowWeatherPresenter {
 
     }
 
-    private void filterList(java.util.List<co.za.forecast.features.showWeather.domain.model.List> renderCollection) {
+    private java.util.List filterList(FiveDayForecast renderCollection) {
+        java.util.List<List> collection = new ArrayList<>(renderCollection.getList());
         java.util.List<List> filteredCollection = new ArrayList<>();
-        for (co.za.forecast.features.showWeather.domain.model.List obj: renderCollection) {
-            if(obj.getDtTxt().contains("12:00:00")){
+        for (List obj : collection) {
+            if (obj.getDtTxt().contains("12:00:00")) {
                 filteredCollection.add(obj);
             }
         }
+        return filteredCollection;
     }
 
-    public void getFiveDayForecast(String latitude, String longitude){
+    public void getFiveDayForecast(String latitude, String longitude) {
+        weatherRepository.getFiveDayForecast(latitude, longitude, new LoadFiveDayWeatherCallBack() {
+            @Override
+            public void onDataLoaded(FiveDayForecast fiveDayForecast) {
+                showWeatherContract.renderFiveDayForecast(filterList(fiveDayForecast));
+            }
+
+            @Override
+            public void onDataloadedFailed(Throwable exception) {
+                //SET ERROR
+            }
+        });
 
     }
 
 
-    }
+}

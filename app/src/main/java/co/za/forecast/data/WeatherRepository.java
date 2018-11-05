@@ -67,7 +67,7 @@ public class WeatherRepository implements WeatherDataSource {
     public void getCurrentWeatherFromRemote(String lat, String lon, final LoadCurrentWeatherCallBack currentWeatherCallBack) {
         remoteWeatherDataSource.getCurrentWeather(lat, lon, new LoadCurrentWeatherCallBack() {
             @Override
-            public void onDataLoaded(FiveDayForecast forecast) {
+            public void onDataLoaded(CurrentWeather forecast) {
                 //  and update local, update timestamp
              //   updateLocalWeather(currentWeather);
                 currentWeatherCallBack.onDataLoaded(forecast);
@@ -86,12 +86,23 @@ public class WeatherRepository implements WeatherDataSource {
     }
 
     @Override
-    public void getFiveDayForecast(String lat, String lon, LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
+    public void getFiveDayForecast(String lat, String lon, final LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
         //check in local
         //if nothing - pull remote and update local, update timestamp
         //if something - populate ui and check if stale
         // if stale - pull from remote and update local and ui
         //if not - nothing
+        remoteWeatherDataSource.getFiveDayForecast(lat, lon, new LoadFiveDayWeatherCallBack() {
+            @Override
+            public void onDataLoaded(FiveDayForecast fiveDayForecast) {
+                loadFiveDayWeatherCallBack.onDataLoaded(fiveDayForecast);
+            }
+
+            @Override
+            public void onDataloadedFailed(Throwable exception) {
+                loadFiveDayWeatherCallBack.onDataloadedFailed(exception);
+            }
+        });
     }
 
 

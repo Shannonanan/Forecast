@@ -32,6 +32,7 @@ public class GetCurrentLocation extends AppCompatActivity {
     private double longitude;
     private double latitude;
     private boolean requestPermission = false;
+    Location lastKnownLocation;
 
 
     @Override
@@ -71,7 +72,9 @@ public class GetCurrentLocation extends AppCompatActivity {
     }
 
     private void coOrdinatesAquired(Location location) {
-        locationManager.removeUpdates(locationListener);
+        if(locationListener != null) {
+            locationManager.removeUpdates(locationListener);
+        }
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         Intent intent = new Intent(this, ShowWeatherActivity.class);
@@ -99,7 +102,21 @@ public class GetCurrentLocation extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             requestPermission = true;
         } else {
+
+            String locationProviderQuick = LocationManager.GPS_PROVIDER;
+
+            try {
+              lastKnownLocation = locationManager.getLastKnownLocation(locationProviderQuick);
+            }catch (SecurityException ex){
+                String temp = ex.getMessage();
+            }
+            if(lastKnownLocation == null){
             setupLocationListener();
+            }
+            else{
+                //start service to listen in background
+                coOrdinatesAquired(lastKnownLocation);
+            }
         }
     }
 
