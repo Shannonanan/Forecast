@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 
 import butterknife.BindView;
@@ -20,10 +21,11 @@ import butterknife.ButterKnife;
 import co.za.forecast.R;
 import co.za.forecast.features.showWeather.domain.model.List;
 import co.za.forecast.features.showWeather.domain.model.Weather;
+import co.za.forecast.utils.TemperatureConverter;
+import co.za.forecast.utils.TimeFormatter;
 
 
 public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.ShowWeatherViewHolder> {
-
 
 
     private java.util.List<List> getWeatherCollection;
@@ -54,14 +56,11 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
     public void onBindViewHolder(@NonNull ShowWeatherViewHolder showWeatherViewHolder, int i) {
         final List weatherToday = this.getWeatherCollection.get(i);
 
-        String dayOfWeek = weatherToday.getDtTxt();
-       showWeatherViewHolder.tv_day_of_week.setText(weatherToday.getDtTxt());
-       String tempToday = String.valueOf(weatherToday.getMain().getTemp());
-       showWeatherViewHolder.tv_temperature.setText(tempToday);
+        showWeatherViewHolder.tv_day_of_week.setText(getDayOfWeek(weatherToday.getDtTxt()));
+        showWeatherViewHolder.tv_temperature.setText(TemperatureConverter.convertKelvinToCelsius(weatherToday.getMain().getTemp()) +  "°");
         java.util.List<Weather> getCondition = new ArrayList<>(weatherToday.getWeather());
         String conditions = getCondition.get(0).getMain();
-        switch (conditions)
-        {
+        switch (conditions) {
             case "Clear":
                 showWeatherViewHolder.iv_icon_condition.setImageDrawable(mContext.getResources().getDrawable(
                         R.drawable.clear));
@@ -84,6 +83,11 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
 
     }
 
+    private String getDayOfWeek(String dateTime) {
+        String[] dateExtraxt = dateTime.split(" ");
+        return TimeFormatter.getDayOfTheWeek(dateExtraxt[0]);
+    }
+
     @Override
     public int getItemCount() {
         return (this.getWeatherCollection != null) ? this.getWeatherCollection.size() : 0;
@@ -91,9 +95,12 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
 
 
     static class ShowWeatherViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_day_of_week) TextView tv_day_of_week;
-        @BindView(R.id.tv_temperature) TextView tv_temperature;
-        @BindView(R.id.iv_icon_condition) ImageView iv_icon_condition;
+        @BindView(R.id.tv_day_of_week)
+        TextView tv_day_of_week;
+        @BindView(R.id.tv_temperature)
+        TextView tv_temperature;
+        @BindView(R.id.iv_icon_condition)
+        ImageView iv_icon_condition;
 
         public ShowWeatherViewHolder(@NonNull View itemView) {
             super(itemView);
