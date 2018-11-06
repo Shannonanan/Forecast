@@ -24,13 +24,9 @@ import co.za.forecast.features.showWeather.ShowWeatherActivity;
 public class GetCurrentLocation extends AppCompatActivity {
 
 
-    private AlertDialog mGPSDialog;
     private static final int GPS_ENABLE_REQUEST = 0x1001;
-    private static final int WIFI_ENABLE_REQUEST = 0x1006;
     LocationManager locationManager;
     LocationListener locationListener;
-    private double longitude;
-    private double latitude;
     private boolean requestPermission = false;
     Location lastKnownLocation;
 
@@ -39,11 +35,15 @@ public class GetCurrentLocation extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (isThereInternetConnection()) {
             checkGPSOn();
         } else {
             noInternetMessage();
+            Intent intent = new Intent(this, ShowWeatherActivity.class);
+            startActivity(intent);
+            finish();
         }
 
     }
@@ -55,30 +55,35 @@ public class GetCurrentLocation extends AppCompatActivity {
             }
 
             @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) { }
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
 
             @Override
-            public void onProviderEnabled(String s) { }
+            public void onProviderEnabled(String s) {
+            }
 
             @Override
-            public void onProviderDisabled(String s) { }
+            public void onProviderDisabled(String s) {
+            }
         };
+
 
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } catch (SecurityException ex) {
             String temp = ex.getMessage();
         }
+
     }
 
     private void coOrdinatesAquired(Location location) {
-        if(locationListener != null) {
+        if (locationListener != null) {
             locationManager.removeUpdates(locationListener);
         }
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
         Intent intent = new Intent(this, ShowWeatherActivity.class);
-        intent.putExtra(getString(R.string.lat),latitude);
+        intent.putExtra(getString(R.string.lat), latitude);
         intent.putExtra(getString(R.string.longs), longitude);
         startActivity(intent);
         finish();
@@ -102,20 +107,17 @@ public class GetCurrentLocation extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             requestPermission = true;
         } else {
-
             String locationProviderQuick = LocationManager.GPS_PROVIDER;
 
             try {
-              lastKnownLocation = locationManager.getLastKnownLocation(locationProviderQuick);
-            }catch (SecurityException ex){
+                lastKnownLocation = locationManager.getLastKnownLocation(locationProviderQuick);
+            } catch (SecurityException ex) {
                 String temp = ex.getMessage();
             }
-            if(lastKnownLocation == null){
-            setupLocationListener();
-            }
-            else{
-                //start service to listen in background
+            if (lastKnownLocation != null) {
                 coOrdinatesAquired(lastKnownLocation);
+            } else {
+                setupLocationListener();
             }
         }
     }
@@ -127,25 +129,23 @@ public class GetCurrentLocation extends AppCompatActivity {
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
-    public boolean showGPSDiabledDialog() {
+    public void showGPSDiabledDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("GPS Disabled");
-        builder.setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device");
-        builder.setPositiveButton("Enable GPS", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.gps_disabled));
+        builder.setMessage(getString(R.string.reason_for_gps));
+        builder.setPositiveButton(getString(R.string.enable_gps), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_ENABLE_REQUEST);
             }
-        }).setNegativeButton("No, Just Exit", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(getString(R.string.no_exit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-        mGPSDialog = builder.create();
+        AlertDialog mGPSDialog = builder.create();
         mGPSDialog.show();
-
-        return true;
     }
 
     @Override
@@ -178,7 +178,8 @@ public class GetCurrentLocation extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (checkLocationPermission() && requestPermission) {
-          setupLocationListener();
+            setupLocationListener();
         }
     }
+
 }

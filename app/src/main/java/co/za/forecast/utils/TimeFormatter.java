@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeFormatter {
     public static String getDayOfTheWeek(String dateRecorded) {
@@ -14,10 +15,10 @@ public class TimeFormatter {
 
 
         try {
-            DateFormat df = new SimpleDateFormat(pattern);
+            DateFormat df = new SimpleDateFormat(pattern, Locale.getDefault());
             Date today = df.parse(date);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
             dayOfTheWeek = sdf.format(today);
 
         } catch (ParseException ex) {
@@ -27,4 +28,5 @@ public class TimeFormatter {
         return dayOfTheWeek;
 
     }
+
 }

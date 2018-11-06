@@ -6,12 +6,14 @@ import co.za.forecast.features.viewControls.ObservableViewMvc;
 
 public interface ShowWeatherContract extends ObservableViewMvc<ShowWeatherContract.Listener> {
 
-
-       interface Listener{
+    interface Listener {
         void changeStatusColour(String condition);
     }
 
     void renderCurrentWeather(CurrentWeather currentWeather);
+
     void renderFiveDayForecast(java.util.List<List> renderCollection);
+
+    void getInfoFailed();
 
 }

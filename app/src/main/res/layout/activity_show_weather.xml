@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".features.showWeather.ShowWeatherActivity"
-    android:background="@color/sunny">
+    >
 
     <FrameLayout
         android:id="@+id/container"

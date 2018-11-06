@@ -19,6 +19,7 @@ public class List {
     @SerializedName("dt_txt")
     @Expose
     private String dtTxt;
+    private String timeSinceSaved;
 
     public Integer getDt() {
         return dt;
@@ -50,6 +51,12 @@ public class List {
 
     public void setDtTxt(String dtTxt) {
         this.dtTxt = dtTxt;
+    }
+
+    public String getTimeSinceSaved() { return timeSinceSaved;
+    }
+
+    public void setTimeSinceSaved(String timeSinceSaved) { this.timeSinceSaved = timeSinceSaved;
     }
 
 }

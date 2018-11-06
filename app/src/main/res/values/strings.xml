@@ -7,7 +7,6 @@
     <string name="placeholder">placeholder</string>
     <string name="tv_day_of_week">Monday</string>
     <string name="tv_temp">00°</string>
-    <string name="tv_condition">SUNNY</string>
 
     <string name="tv_min">min</string>
     <string name="tv_current">current</string>
@@ -15,5 +14,14 @@
     <string name="no_internet">no internet connection</string>
     <string name="lat">lat</string>
     <string name="longs">longs</string>
-    <string name="degree">\u00B0</string>
+    <string name="gps_disabled">GPS Disabled</string>
+    <string name="reason_for_gps">Gps is disabled, in order to use the application properly you need to enable the GPS of your device</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="no_exit">No, Just Exit</string>
+    <string name="cannot_be_null">The list cannot be null</string>
+    <string name="degree_symbol">\u00B0</string>
+    <string name="no_info_found">no information found</string>
+
+    <string name="show_temp">%1$s%2$s</string>
+
 </resources>
