@@ -27,4 +27,5 @@ public class TimeFormatter {
         return dayOfTheWeek;
 
     }
+
 }

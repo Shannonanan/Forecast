@@ -8,6 +8,7 @@ import co.za.forecast.common.AppExecutors;
 import co.za.forecast.data.WeatherDataSource;
 import co.za.forecast.data.WeatherRepository;
 import co.za.forecast.data.local.LocalWeatherDataSource;
+import co.za.forecast.data.local.WeatherDatabase;
 import co.za.forecast.data.remote.OpenWeatherService;
 import co.za.forecast.data.remote.RemoteWeatherDataSource;
 import co.za.forecast.features.showWeather.ShowWeatherPresenter;
@@ -34,8 +35,10 @@ public class InjectorUtils {
         return retrofit.create(OpenWeatherService.class);
     }
 
-    public static WeatherRepository provideRepository(){
-        LocalWeatherDataSource localWeatherDataSource = LocalWeatherDataSource.getInstance();
+    public static WeatherRepository provideRepository(Context context){
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        WeatherDatabase weatherDatabase = WeatherDatabase.getInstance(context.getApplicationContext());
+        LocalWeatherDataSource localWeatherDataSource = LocalWeatherDataSource.getInstance(weatherDatabase.currentDao(), appExecutors);
         RemoteWeatherDataSource remoteWeatherDataSource = RemoteWeatherDataSource.getInstance(getWeatherService(getRetrofit()));
         return  WeatherRepository.getInstance(localWeatherDataSource, remoteWeatherDataSource);
     }
@@ -45,8 +48,10 @@ public class InjectorUtils {
         return ViewMvcFactory.getInstance(layoutInflater);
     }
 
-    public static ShowWeatherPresenter providePresenter() {
-        LocalWeatherDataSource localWeatherDataSource = LocalWeatherDataSource.getInstance();
+    public static ShowWeatherPresenter providePresenter(Context context) {
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        WeatherDatabase weatherDatabase = WeatherDatabase.getInstance(context.getApplicationContext());
+        LocalWeatherDataSource localWeatherDataSource = LocalWeatherDataSource.getInstance(weatherDatabase.currentDao(), appExecutors);
         RemoteWeatherDataSource remoteWeatherDataSource = RemoteWeatherDataSource.getInstance(getWeatherService(getRetrofit()));
         WeatherRepository weatherRepository1 = new WeatherRepository(localWeatherDataSource,remoteWeatherDataSource);
         return ShowWeatherPresenter.getInstance(weatherRepository1);

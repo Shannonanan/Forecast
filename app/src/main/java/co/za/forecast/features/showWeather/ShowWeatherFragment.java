@@ -31,7 +31,7 @@ public class ShowWeatherFragment extends Fragment implements ShowWeatherContract
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewMvcFactory = InjectorUtils.provideViewMvcFactory(getContext());
-        showWeatherPresenter = InjectorUtils.providePresenter();
+        showWeatherPresenter = InjectorUtils.providePresenter(getContext());
         onConditionChangeListener = (onConditionChangeListener) getContext();
         currentWeather = new CurrentWeather();
 

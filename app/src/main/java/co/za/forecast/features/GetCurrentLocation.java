@@ -44,6 +44,9 @@ public class GetCurrentLocation extends AppCompatActivity {
             checkGPSOn();
         } else {
             noInternetMessage();
+            Intent intent = new Intent(this, ShowWeatherActivity.class);
+            startActivity(intent);
+            finish();
         }
 
     }
