@@ -18,7 +18,7 @@ public class ShowWeatherPresenter {
     private static ShowWeatherPresenter sInstance;
     private static final Object LOCK = new Object();
 
-    public ShowWeatherPresenter(WeatherRepository weatherRepository) {
+    private ShowWeatherPresenter(WeatherRepository weatherRepository) {
         this.weatherRepository = weatherRepository;
     }
 
@@ -63,7 +63,7 @@ public class ShowWeatherPresenter {
         return filteredCollection;
     }
 
-    public void getFiveDayForecast(String latitude, String longitude) {
+    private void getFiveDayForecast(String latitude, String longitude) {
         weatherRepository.getFiveDayForecast(latitude, longitude, new LoadFiveDayWeatherCallBack() {
             @Override
             public void onDataLoaded(FiveDayForecast fiveDayForecast) {
@@ -72,7 +72,7 @@ public class ShowWeatherPresenter {
 
             @Override
             public void onDataloadedFailed(Throwable exception) {
-                //SET ERROR
+                showWeatherContract.getInfoFailed();
             }
         });
 

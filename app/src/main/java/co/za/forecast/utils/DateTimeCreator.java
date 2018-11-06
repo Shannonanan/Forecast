@@ -2,25 +2,22 @@ package co.za.forecast.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateTimeCreator {
     public static String getTodaysDate(){
         Date today = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateToStr = format.format(today);
-        System.out.println(dateToStr);
-
-        return  dateToStr;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return format.format(today);
     }
 
-    public static String getTimeNow() {
+    static String getTimeNow() {
         Date today = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("hh");
-        String timeToString = format.format(today);
-        return timeToString;
+        SimpleDateFormat format = new SimpleDateFormat("hh", Locale.getDefault());
+        return format.format(today);
     }
 
-    public static boolean isTimemoreThan2hrsPast(String past){
+    public static boolean isTimemoreThan3hrsPast(String past){
         String now = getTimeNow();
         int nowInt = Integer.parseInt(now);
         int pastInt = Integer.parseInt(past);

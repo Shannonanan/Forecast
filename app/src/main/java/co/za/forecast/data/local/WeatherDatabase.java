@@ -7,8 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
-@Database(entities = {CurrentWeatherEntity.class}, version = 1, exportSchema = false)
-@TypeConverters({DateConverter.class, MainObjectConverter.class, WeatherObjectConverter.class})
+@Database(entities = {CurrentWeatherEntity.class, SingleFiveDayForecastEntity.class}, version = 1, exportSchema = false)
+@TypeConverters({DateConverter.class, MainObjectConverter.class, WeatherObjectConverter.class, ListObjectConverter.class})
 public abstract class WeatherDatabase extends RoomDatabase{
 
     private static final String LOG_TAG = WeatherDatabase.class.getSimpleName();
@@ -31,7 +31,7 @@ public abstract class WeatherDatabase extends RoomDatabase{
     }
 
     public abstract CurrentWeatherDao currentDao();
- //   public abstract FiveDayWeatherDao fiveDayDao();
+    public abstract FiveDayWeatherDao fiveDayDao();
 
 }
 

@@ -1,9 +1,13 @@
 package co.za.forecast.data.local;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.za.forecast.common.AppExecutors;
 import co.za.forecast.data.WeatherDataSource;
 import co.za.forecast.features.showWeather.domain.model.CurrentWeather;
+import co.za.forecast.features.showWeather.domain.model.FiveDayForecast;
 import co.za.forecast.utils.DateTimeCreator;
 import co.za.forecast.utils.ObjectTransformer;
 
@@ -13,20 +17,19 @@ public class LocalWeatherDataSource {
     private static LocalWeatherDataSource sInstance;
     private static final Object LOCK = new Object();
     private CurrentWeatherDao currentDao;
-  //  private FiveDayWeatherDao  fiveDayDao;
+    private FiveDayWeatherDao  fiveDayDao;
+    private final AppExecutors mExecutors;
 
-    public LocalWeatherDataSource(CurrentWeatherDao currentDao, AppExecutors mExecutors) {
+    public LocalWeatherDataSource(CurrentWeatherDao currentDao, FiveDayWeatherDao fiveDayDao, AppExecutors mExecutors) {
         this.currentDao = currentDao;
+        this.fiveDayDao = fiveDayDao;
         this.mExecutors = mExecutors;
     }
 
-    private final AppExecutors mExecutors;
-
-
-    public static LocalWeatherDataSource getInstance(CurrentWeatherDao currentDao, AppExecutors mExecutors) {
+    public static LocalWeatherDataSource getInstance(CurrentWeatherDao currentDao, FiveDayWeatherDao fiveDayDao, AppExecutors mExecutors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new LocalWeatherDataSource(currentDao,mExecutors);
+                sInstance = new LocalWeatherDataSource(currentDao, fiveDayDao, mExecutors);
             }
         }
         return sInstance;
@@ -60,24 +63,32 @@ public class LocalWeatherDataSource {
     }
 
 
-    public void saveFiveDayForecast(String lat, String lon, WeatherDataSource.LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
+    public void saveFiveDayForecast(final List<SingleFiveDayForecastEntity> entities) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-               // CurrentWeatherEntity currentWeatherEntity = transform(currentWeather);
-               // currentDao.insertCurrentWeather(currentWeatherEntity);
+                fiveDayDao.bulkInsert(entities);
             }
         };
         mExecutors.diskIO().execute(runnable);
     }
 
 
-    public void getFiveDayForecast(String lat, String lon, WeatherDataSource.LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
+    public void getFiveDayForecast(final WeatherDataSource.LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                // CurrentWeatherEntity currentWeatherEntity = transform(currentWeather);
-                // currentDao.insertCurrentWeather(currentWeatherEntity);
+                List<SingleFiveDayForecastEntity> savesEntities = new ArrayList<>(fiveDayDao.getFiveDayForecast());
+                List<co.za.forecast.features.showWeather.domain.model.List> forecastObjList = new ArrayList<>();
+                FiveDayForecast fiveDayForecast = null;
+                if(!savesEntities.isEmpty()){
+                 fiveDayForecast = new FiveDayForecast();
+                for (SingleFiveDayForecastEntity obj: savesEntities) {
+                    forecastObjList.add(ObjectTransformer.transformToForecast(obj));
+                }
+                fiveDayForecast.setList(forecastObjList);}
+
+                loadFiveDayWeatherCallBack.onDataLoaded(fiveDayForecast);
             }
         };
         mExecutors.diskIO().execute(runnable);

@@ -12,8 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +30,7 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
     private Context mContext;
 
 
-    public ShowWeatherAdapter(Context mContext) {
+    ShowWeatherAdapter(Context mContext) {
         this.getWeatherCollection = Collections.emptyList();
         this.mContext = mContext;
 
@@ -44,12 +42,10 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.cell_five_day_forecast;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        ShowWeatherViewHolder viewHolder = new ShowWeatherViewHolder(view);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
 
-        return viewHolder;
+        return new ShowWeatherViewHolder(view);
     }
 
     @Override
@@ -57,7 +53,8 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
         final List weatherToday = this.getWeatherCollection.get(i);
 
         showWeatherViewHolder.tv_day_of_week.setText(getDayOfWeek(weatherToday.getDtTxt()));
-        showWeatherViewHolder.tv_temperature.setText(TemperatureConverter.convertKelvinToCelsius(weatherToday.getMain().getTemp()) +  "°");
+        String temp = mContext.getString(R.string.show_temp, TemperatureConverter.convertKelvinToCelsius(weatherToday.getMain().getTemp()),mContext.getString(R.string.degree_symbol));
+        showWeatherViewHolder.tv_temperature.setText(temp);
         java.util.List<Weather> getCondition = new ArrayList<>(weatherToday.getWeather());
         String conditions = getCondition.get(0).getMain();
         switch (conditions) {
@@ -84,8 +81,8 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
     }
 
     private String getDayOfWeek(String dateTime) {
-        String[] dateExtraxt = dateTime.split(" ");
-        return TimeFormatter.getDayOfTheWeek(dateExtraxt[0]);
+        String[] dateExtract = dateTime.split(" ");
+        return TimeFormatter.getDayOfTheWeek(dateExtract[0]);
     }
 
     @Override
@@ -102,14 +99,14 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
         @BindView(R.id.iv_icon_condition)
         ImageView iv_icon_condition;
 
-        public ShowWeatherViewHolder(@NonNull View itemView) {
+        private ShowWeatherViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
 
-    public void setInfoCollection(java.util.List<List> INFO) {
+    void setInfoCollection(java.util.List<List> INFO) {
         this.validateCollection(INFO);
         this.getWeatherCollection = INFO;
         this.notifyDataSetChanged();
@@ -118,7 +115,7 @@ public class ShowWeatherAdapter extends RecyclerView.Adapter<ShowWeatherAdapter.
 
     private void validateCollection(Collection<List> infoCollection) {
         if (infoCollection == null) {
-            throw new IllegalArgumentException("The list cannot be null");
+            throw new IllegalArgumentException(mContext.getString(R.string.cannot_be_null));
         }
     }
 

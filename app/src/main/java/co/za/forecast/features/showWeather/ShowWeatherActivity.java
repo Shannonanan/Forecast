@@ -34,35 +34,46 @@ public class ShowWeatherActivity extends BaseActivity implements ShowWeatherFrag
 
 
     @Override
-    public void onConditionChangeColour(String condition) {
-        switch (condition) {
-            case "Clear":
-                if (Build.VERSION.SDK_INT >= 21) {
-                    getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.sunny));
+    public void onConditionChangeColour(final String condition) {
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                switch (condition) {
+                    case "Clear":
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
+                            getWindow().setStatusBarColor(getResources().getColor(R.color.sunny));
+                        }
+                        break;
+                    case "Clouds":
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
+                            getWindow().setStatusBarColor(getResources().getColor(R.color.cloudy));
+                        }
+                        break;
+                    case "Thunderstorm":
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
+                            getWindow().setStatusBarColor(getResources().getColor(R.color.rainy));
+                        }
+                        break;
+                    case "Rain":
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
+                            getWindow().setStatusBarColor(getResources().getColor(R.color.rainy));
+                        }
+                        break;
+                    default:
+                        break;
+
                 }
-                break;
-            case "Clouds":
-                if (Build.VERSION.SDK_INT >= 21) {
-                    getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.cloudy));
-                }
-                break;
-            case "Thunderstorm":
-                if (Build.VERSION.SDK_INT >= 21) {
-                    getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.rainy));
-                }
-                break;
-            case "Rain":
-                if (Build.VERSION.SDK_INT >= 21) {
-                    getWindow().setNavigationBarColor(getResources().getColor(R.color.cloudy));
-                    getWindow().setStatusBarColor(getResources().getColor(R.color.rainy));
-                }
-                break;
-            default:
-                break;
+
+            }
+        });
+
 
         }
     }
-}
+

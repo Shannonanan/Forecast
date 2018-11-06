@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import co.za.forecast.R;
 import co.za.forecast.di.InjectorUtils;
 import co.za.forecast.features.showWeather.domain.model.CurrentWeather;
 import co.za.forecast.features.viewControls.ViewMvcFactory;
@@ -48,8 +49,8 @@ public class ShowWeatherFragment extends Fragment implements ShowWeatherContract
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        latitude = String.valueOf(getArguments().getDouble("lat"));
-        longitude = String.valueOf(getArguments().getDouble("longs"));
+        latitude = String.valueOf(getArguments().getDouble(getString(R.string.lat)));
+        longitude = String.valueOf(getArguments().getDouble(getString(R.string.longs)));
         if (savedInstanceState == null) {
             this.showWeatherPresenter.setView(mViewMvc);
             showWeatherPresenter.getCurrentWeather(latitude, longitude);

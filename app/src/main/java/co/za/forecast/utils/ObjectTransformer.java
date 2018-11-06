@@ -3,7 +3,9 @@ package co.za.forecast.utils;
 import java.util.ArrayList;
 
 import co.za.forecast.data.local.CurrentWeatherEntity;
+import co.za.forecast.data.local.SingleFiveDayForecastEntity;
 import co.za.forecast.features.showWeather.domain.model.CurrentWeather;
+import co.za.forecast.features.showWeather.domain.model.List;
 import co.za.forecast.features.showWeather.domain.model.Weather;
 
 public class ObjectTransformer {
@@ -41,4 +43,35 @@ public class ObjectTransformer {
         }
         return currentWeather;
     }
+
+    public static SingleFiveDayForecastEntity transformToSingleEntity(List result) {
+        Weather weather = result.getWeather().get(0);
+        SingleFiveDayForecastEntity singleFiveDayForecastEntity = null;
+        if (result != null) {
+            singleFiveDayForecastEntity = new SingleFiveDayForecastEntity();
+            singleFiveDayForecastEntity.setMain(result.getMain());
+            singleFiveDayForecastEntity.setWeather(weather);
+            singleFiveDayForecastEntity.setDtTxt(result.getDtTxt());
+            singleFiveDayForecastEntity.setDt(result.getDt());
+            singleFiveDayForecastEntity.setTimeSinceSaved(DateTimeCreator.getTimeNow());
+        }
+        return singleFiveDayForecastEntity;
+    }
+
+    public static List transformToForecast(SingleFiveDayForecastEntity result) {
+        java.util.List<Weather> listWeather = new ArrayList<>();
+        List forecastObj = null;
+        if (result != null) {
+            forecastObj = new List();
+            listWeather.add(result.getWeather());
+
+            forecastObj.setMain(result.getMain());
+            forecastObj.setWeather(listWeather);
+            forecastObj.setDtTxt(result.getDtTxt());
+            forecastObj.setDt(result.getDt());
+            forecastObj.setTimeSinceSaved(result.getTimeSinceSaved());
+        }
+        return forecastObj;
+    }
+
 }

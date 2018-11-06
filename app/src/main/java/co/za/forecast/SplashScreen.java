@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        int INTERNET_TIME_OUT = 3000;
+        int TIME_OUT = 2000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -26,7 +26,7 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(inent);
                 finish();
             }
-        }, INTERNET_TIME_OUT);
+        }, TIME_OUT);
 
     }
 }

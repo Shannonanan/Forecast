@@ -32,7 +32,7 @@ public class RemoteWeatherDataSource implements WeatherDataSource {
 
     @Override
     public void getCurrentWeather(String lat, String lon, final LoadCurrentWeatherCallBack currentWeatherCallBack) {
-        callCurrentWeather = service.getCurrentWeather(lat,lon,"bd93967a9fa781ed9a813e9601cca72a");
+        callCurrentWeather = service.getCurrentWeather(lat,lon,"");
         callCurrentWeather.enqueue(new Callback<CurrentWeather>() {
                 @Override
                 public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
@@ -54,7 +54,7 @@ public class RemoteWeatherDataSource implements WeatherDataSource {
 
     @Override
     public void getFiveDayForecast(String lat, String lon, final LoadFiveDayWeatherCallBack loadFiveDayWeatherCallBack) {
-        callFiveDayForecast = service.getFiveDayForecast(lat,lon,"bd93967a9fa781ed9a813e9601cca72a");
+        callFiveDayForecast = service.getFiveDayForecast(lat,lon,"");
         callFiveDayForecast.enqueue(new Callback<FiveDayForecast>() {
             @Override
             public void onResponse(Call<FiveDayForecast> call, Response<FiveDayForecast> fiveDayForecastResponse) {
