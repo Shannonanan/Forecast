@@ -1,7 +1,7 @@
 # Forecast
 A small weather app which provides the current weather and a five day forecast
 
-To insert your own Api key, go to  [https://openweathermap.org] and add it to the RemoteWeatherDataSource class in the Data package.
+To insert your own Api key, go to  https://openweathermap.org and add it to the RemoteWeatherDataSource class in the Data package.
 
 ### Architecture
 
